@@ -35,13 +35,38 @@
     display: inline-block;
   }
 
+  sas-eq {
+    display: flex;
+    align-items: center;
+  }
+
   sas-value {
     padding: 5px 10px;
   }
 
+  sas-frac {
+    text-align: center;
+  }
+
+  sas-frac > * {
+    display: block;
+    width: 100%;
+    transform: scale(0.75);
+  }
+
+  sas-frac > :first-child {
+    border-bottom: 2px solid black;
+  }
+
   .exponent {
     position: relative;
-    transform: translateY(-50%) scale(0.75);
+    transform: translateY(-25%) scale(0.75);
+  }
+
+  .root {
+    position: relative;
+    transform: translateY(-25%) scale(0.5);
+    margin-right: -15px;
   }
 
   .hovered {

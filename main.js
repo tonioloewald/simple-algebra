@@ -30,6 +30,8 @@ const algebra = {
   '#': (settings = {}) => makeElement('sas-value', settings),
   '=': (settings = {}) => makeElement('sas-eq', settings),
   '^': (settings = {}) => makeElement('sas-pow', settings),
+  '/': (settings = {}) => makeElement('sas-frac', settings),
+  '√': (settings = {}) => makeElement('sas-root', settings),
 }
 
 function renderError(message) {
@@ -57,7 +59,7 @@ function renderTerm(term) {
 }
 
 function topLevel(element) {
-  return element.parentElement.matches('sas-expression, sas-eq')
+  return element.parentElement.matches('sas-expression, sas-eq, sas-frac')
 }
 
 makeWebComponent('sas-sum', {
@@ -91,6 +93,25 @@ makeWebComponent('sas-sum', {
   }
 })
 
+makeWebComponent('sas-frac', {
+  attributes: {
+    terms: [1, 2]
+  },
+  content: false,
+  methods: {
+    render () {
+      this.textContent = ''
+      if (this.terms.length === 2) {
+        const [x, y] = this.terms
+        this.appendChild(renderTerm(x))
+        this.appendChild(renderTerm(y))
+      } else {
+        this.appendChild(renderError('fraction exactly two terms'))
+      }
+    }
+  }
+})
+
 makeWebComponent('sas-pow', {
   attributes: {
     terms: ['x', 2]
@@ -106,7 +127,31 @@ makeWebComponent('sas-pow', {
         exponent.classList.add('exponent')
         this.appendChild(exponent)
       } else {
-        this.appendChild(renderError('power expression requires exactly two terms'))
+        this.appendChild(renderError('power requires exactly two terms'))
+      }
+    }
+  }
+})
+
+makeWebComponent('sas-root', {
+  attributes: {
+    terms: ['x', 2]
+  },
+  content: false,
+  methods: {
+    render () {
+      this.textContent = ''
+      if (this.terms.length === 2) {
+        const [x, y] = this.terms
+        if (y !== 2) {
+          const root = renderTerm(y)
+          root.classList.add('root')
+          this.appendChild(root)
+        }
+        this.appendChild(document.createTextNode('√'))
+        this.appendChild(renderTerm(x))
+      } else {
+        this.appendChild(renderError('root requires exactly two terms'))
       }
     }
   }
