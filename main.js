@@ -79,7 +79,7 @@ makeWebComponent('sas-prod', {
       }
       for(let i in terms) {
         const term = terms[i]
-        if (i > 0) {
+        if (i > 0 && !isNaN(term)) {
           this.appendChild(document.createTextNode(' × '))
         }
         let element
