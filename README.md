@@ -27,6 +27,17 @@ e.g.
 Every element comprises an array where the first item defines the type of element
 and the others are the terms. Reordering the terms works exactly as you would expect.
 
+I should add that because this is all implemented as custom-elements, the individual
+pieces can be directly interrogated and manipulated in the console. Similarly, because
+`b8r` is used to handle the application state and is exposed as a global (for convenience)
+you can interrogate it directly in the console as well, e.g.
+
+```
+> b8r.reg.app.expression = ['+', 'x', 1]
+```
+
+Similarly, you could select the <sas-expression> element and change its `value` directly.)
+
 
 ## Running the Project
 
