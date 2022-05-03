@@ -1,0 +1,54 @@
+<title>Simple Algebra System</title>
+<style>
+  * {
+    font-family: System, sans-serif;
+    color: #888;
+  }
+
+  textarea {
+    font-size: 24px;
+    font-family: Monaco, Menlo, monospace;
+    display: block;
+    resize: none;
+    width: 100%;
+  }
+
+  .error {
+    border: 1px solid red;
+  }
+
+  sas-expression * {
+    font-size: 24px;
+    font-family: Monaco, Menlo, monospace;
+  }
+
+  sas-value * {
+    color: black;
+  }
+
+  sas-expression,
+  sas-prod,
+  sas-sum,
+  sas-value {
+    display: inline-block;
+  }
+
+  sas-expression {
+    padding: 5px;
+  }
+</style>
+<script type="module" src="main.js"></script>
+<h1>Simple Algebra</h1>
+<label>
+  <h3>Expression Editor</h3>
+  <textarea 
+      data-bind="
+        value=app.expressionJSON
+        class(error)=app.error
+      "
+      data-event="input:app.update"
+  >
+  </textarea>
+</label>
+<h3>Renderer</h3>
+<sas-expression data-bind="value=app.expression"></sas-expression>

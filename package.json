@@ -1,0 +1,15 @@
+{
+  "name": "aktiv-algebra",
+  "version": "1.0.0",
+  "description": "simple algebra system",
+  "main": "index.html",
+  "scripts": {
+    "test": "npx http-server"
+  },
+  "author": "Tonio Loewald",
+  "license": "ISC",
+  "devDependencies": {
+    "@tonioloewald/b8r": "^0.5.25",
+    "http-server": "^14.1.0"
+  }
+}
