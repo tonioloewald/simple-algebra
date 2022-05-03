@@ -43,9 +43,14 @@ makeWebComponent('sas-sum', {
         this.appendChild(document.createTextNode('('))
       }
       for(let i in terms) {
-        const term = terms[i]
+        let term = terms[i]
         if (i > 0) {
-          this.appendChild(document.createTextNode(' + '))
+          if (term < 0) {
+            term = -term
+            this.appendChild(document.createTextNode(' - '))
+          } else {
+            this.appendChild(document.createTextNode(' + '))
+          }
         }
         let element
         if (Array.isArray(term)) {
