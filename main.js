@@ -26,6 +26,7 @@ const {makeWebComponent, makeElement} = b8r.webComponents
 
 const algebra = {
   '+': (settings = {}) => makeElement('sas-sum', settings),
+  '-': (settings = {}) => makeElement('sas-negative', settings),
   '*': (settings = {}) => makeElement('sas-prod', settings),
   '#': (settings = {}) => makeElement('sas-value', settings),
   '=': (settings = {}) => makeElement('sas-eq', settings),
@@ -62,6 +63,10 @@ function topLevel(element) {
   return element.parentElement.matches('sas-expression, sas-eq, sas-frac')
 }
 
+function isNegative(term) {
+  return typeof term === 'number' || (Array.isArray(term) && term[0] === '-')
+}
+
 makeWebComponent('sas-sum', {
   attributes: {
     terms: [1, 1]
@@ -77,8 +82,8 @@ makeWebComponent('sas-sum', {
       for(let i in terms) {
         let term = terms[i]
         if (i > 0) {
-          if (term < 0) {
-            term = -term
+          if (isNegative(term)) {
+            term = Array.isArray(term) ? term[1] : -term
             this.appendChild(document.createTextNode(' - '))
           } else {
             this.appendChild(document.createTextNode(' + '))
@@ -128,6 +133,24 @@ makeWebComponent('sas-pow', {
         this.appendChild(exponent)
       } else {
         this.appendChild(renderError('power requires exactly two terms'))
+      }
+    }
+  }
+})
+
+makeWebComponent('sas-negative', {
+  attributes: {
+    terms: [17]
+  },
+  content: false,
+  methods: {
+    render() {
+      this.textContent = ''
+      if (this.terms.length === 1) {
+        this.appendChild(document.createTextNode('-'))
+        this.appendChild(renderTerm(this.terms[0]))
+      } else {
+        this.appendChild(renderError('negative requires exactly one term'))
       }
     }
   }
@@ -186,7 +209,8 @@ makeWebComponent('sas-prod', {
     render () {
       const {terms} = this
       this.textContent = ''
-      if (terms.length > 1 && !topLevel(this)) {
+      const needsParentheses = !topLevel(this) && !this.parentElement.matches('sas-sum, sas-negative')
+      if (needsParentheses) {
         this.appendChild(document.createTextNode('('))
       }
       for(let i in terms) {
@@ -196,7 +220,7 @@ makeWebComponent('sas-prod', {
         }
         this.appendChild(renderTerm(term))
       }
-      if (terms.length > 1 && !topLevel(this)) {
+      if (needsParentheses) {
         this.appendChild(document.createTextNode(')'))
       }
     }
